@@ -1,5 +1,12 @@
 const httpConstants = require('http2').constants;
 const NOT_FOUND_INDEX = -1;
+const RESPONSE_MSG = {
+    PRODUCT: {
+        NOT_FOUND: 'Product not found',
+        INVALID: 'Product invalid',
+        REMOVED: 'Product removed'
+    }
+};
 
 const db = {
     products: [
@@ -10,6 +17,8 @@ const db = {
         { id: 5, description: 'Nescau 400gr', value: 8.00, brand: 'Nestlé' },
     ]
 };
+
+const responseBodyMsg = (message) => ({ message });
 
 const findProductIndex = (id) => {
     id = +id;
@@ -28,13 +37,13 @@ const getProductById = (req, res) => {
         res.json(product);
         return;
     }
-    res.status(httpConstants.HTTP_STATUS_OK).send('Product not found');
+    res.status(httpConstants.HTTP_STATUS_OK).send(responseBodyMsg(RESPONSE_MSG.PRODUCT.NOT_FOUND));
 };
 
 const createProduct = (req, res) => {
     const product = req.body;
     if (!isValidProduct(product)) {
-        res.status(httpConstants.HTTP_STATUS_BAD_REQUEST).send('Product invalid');
+        res.status(httpConstants.HTTP_STATUS_BAD_REQUEST).send(responseBodyMsg(RESPONSE_MSG.PRODUCT.INVALID));
         return;
     }
     db.products.push(product);
@@ -45,12 +54,12 @@ const updateProduct = (req, res) => {
     const id = req.params.id;
     const product = req.body;
     if (!isValidProduct(product)) {
-        res.status(httpConstants.HTTP_STATUS_BAD_REQUEST).send('Product invalid');
+        res.status(httpConstants.HTTP_STATUS_BAD_REQUEST).send(responseBodyMsg(RESPONSE_MSG.PRODUCT.INVALID));
         return;
     }
     const index = findProductIndex(id);
     if (index === NOT_FOUND_INDEX) {
-        res.status(httpConstants.HTTP_STATUS_NOT_FOUND).send('Product not found');
+        res.status(httpConstants.HTTP_STATUS_NOT_FOUND).send(responseBodyMsg(RESPONSE_MSG.PRODUCT.NOT_FOUND));
         return;
     }
     db.products[index] = product;
@@ -61,11 +70,11 @@ const deleteProduct = (req, res) => {
     const id = req.params.id;
     const index = findProductIndex(id);
     if (index === NOT_FOUND_INDEX) {
-        res.status(httpConstants.HTTP_STATUS_NOT_FOUND).send('Product not found');
+        res.status(httpConstants.HTTP_STATUS_NOT_FOUND).send(responseBodyMsg(RESPONSE_MSG.PRODUCT.NOT_FOUND));
         return;
     }
     db.products.splice(index, 1);
-    res.status(httpConstants.HTTP_STATUS_OK).send('Removed product');
+    res.status(httpConstants.HTTP_STATUS_OK).send(responseBodyMsg(RESPONSE_MSG.PRODUCT.REMOVED));
 };
 
 module.exports = {
