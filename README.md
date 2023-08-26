@@ -1,6 +1,6 @@
 # node-rest-api
 
-Restful toy api with nodejs, express and in memory database
+Restful toy api with nodejs, express and in memory database, available at [https://restful-node-api.onrender.com/products](restful-node-api.onrender.com/products)
 
 ## Installation
 
