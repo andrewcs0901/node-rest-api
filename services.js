@@ -11,7 +11,10 @@ const listaProdutos = {
     ]
 };
 
-const findProductIndex = (id) => listaProdutos.produtos.findIndex(p => p.id === id);
+const findProductIndex = (id) => {
+    id = +id;
+    return listaProdutos.produtos.findIndex(p => p.id === id);
+}
 const isValidProduct = (product) => product.descricao && product.valor > 0 && product.marca;
 
 const getAllProducts = (_req, res) => {
@@ -45,7 +48,7 @@ const updateProduct = (req, res) => {
         res.status(httpConstants.HTTP_STATUS_BAD_REQUEST).send('Produto inválido');
         return;
     }
-    const index = findProductIndex(p => p.id === id);
+    const index = findProductIndex(id);
     if (index === NOT_FOUND_INDEX) {
         res.status(httpConstants.HTTP_STATUS_NOT_FOUND).send('Produto não encontrado');
         return;
@@ -56,7 +59,7 @@ const updateProduct = (req, res) => {
 
 const deleteProduct = (req, res) => {
     const id = req.params.id;
-    const index = findProductIndex(p => p.id === id);
+    const index = findProductIndex(id);
     if (index === NOT_FOUND_INDEX) {
         res.status(httpConstants.HTTP_STATUS_NOT_FOUND).send('Produto não encontrado');
         return;
