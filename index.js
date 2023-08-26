@@ -5,16 +5,16 @@ const app = express();
 app.use(express.json());
 const PORT = 3000;
 
-app.get('/produtos', getAllProducts);
+app.get('/products', getAllProducts);
 
-app.get('/produtos/:id', getProductById);
+app.get('/products/:id', getProductById);
 
-app.post('/produtos', createProduct);
+app.post('/products', createProduct);
 
-app.put('/produtos/:id', updateProduct);
+app.put('/products/:id', updateProduct);
 
-app.delete('/produtos/:id', deleteProduct);
+app.delete('/products/:id', deleteProduct);
 
 app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
+    console.log(`Running on port ${PORT} 🚀`);
 });
